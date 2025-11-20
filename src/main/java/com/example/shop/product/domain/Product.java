@@ -67,6 +67,7 @@ public class Product {
         this.status = status;
     }
 
+    // 상품이 처음 만들어질 때 누가 만든건지에 대한 정보 - regId, modifyId를 creatorId로 세팅
     public static Product create(UUID sellerId,
                                  String name,
                                  String description,
@@ -80,6 +81,7 @@ public class Product {
         return product;
     }
 
+    // 상품이 수정될 때 어떤값이 바뀌는지, 누가 수정했는지 관리
     public void update(String name,
                        String description,
                        BigDecimal price,

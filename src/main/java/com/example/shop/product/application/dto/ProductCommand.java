@@ -13,6 +13,6 @@ public record ProductCommand(
         BigDecimal price,
         Integer stock,
         String status,
-        UUID operatorId
+        UUID operatorId // 요청을 수정한 운영자/판매자/관리자를 구분하기 위한 값
 ) {
 }

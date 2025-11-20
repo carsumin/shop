@@ -15,6 +15,7 @@ public record MemberRequest(
         String saltKey,
         String flag
 ) {
+    // MemberRequest 내부 필드 그대로 넘긴다.
     public MemberCommand toCommand(){
         return new MemberCommand(email, name, password, phone, saltKey, flag);
     }

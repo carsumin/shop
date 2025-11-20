@@ -48,27 +48,34 @@ public class PaymentService {
 //        this.orderService = orderService;
 //    }
 
+    // 목록 조회
     public ResponseEntity<List<PaymentInfo>> findAll(Pageable pageable) {
         Page<Payment> page = paymentRepository.findAll(pageable);
         List<PaymentInfo> payments = page.stream().map(PaymentInfo::from).toList();
         return new ResponseEntity<>(HttpStatus.OK.value(), payments, page.getTotalElements());
     }
 
+    // 결제 승인 - payment 핵심 유스케이스
     public ResponseEntity<PaymentInfo> confirm(PaymentCommand command) {
+        // 토스에 결제 승인 요청
         TossPaymentResponse tossPayment = tossPaymentClient.confirm(command);
 //        UUID orderId = UUID.fromString(tossPayment.orderId());
 //        PurchaseOrder order = orderService.findEntity(orderId);
-        // DB에 들어가기 위한 구조로 다시 만듦
+        // 토스 응답을 기반으로 DB에 들어가기 위한 구조로 다시 만듦
         Payment payment = Payment.create(
                 tossPayment.paymentKey(),
                 tossPayment.orderId(),
                 tossPayment.totalAmount()
         );
+
+        // 응답 시간값 변환
         LocalDateTime approvedAt = tossPayment.approvedAt() != null ? tossPayment.approvedAt().toLocalDateTime() : null;
         LocalDateTime requestedAt = tossPayment.requestedAt() != null ? tossPayment.requestedAt().toLocalDateTime() : null;
 
+        // payment를 CONFIRMED 상태로 전환
         payment.markConfirmed(tossPayment.method(), approvedAt, requestedAt);
 
+        // DB에 실제 결과 저장
         Payment saved = paymentRepository.save(payment);
 //        orderService.markPaid(order);
 //        SellerSettlement settlement = SellerSettlement.create(

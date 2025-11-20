@@ -61,6 +61,7 @@ public class TossPaymentClient {
         }
     }
 
+    // 토스에서 제공하는 결제 문서 구조에 따라
     private HttpHeaders createHeaders() {
         HttpHeaders headers = new HttpHeaders(); // 헤더 생성
         headers.setContentType(MediaType.APPLICATION_JSON);

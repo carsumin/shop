@@ -19,6 +19,7 @@ public record ProductRequest(
 ) {
 
     public ProductCommand toCommand() {
+        // String으로 들어온 UUID 직접 파싱해서 Command에 UUID 넘김
         UUID operator = operatorId != null ? UUID.fromString(operatorId) : null;
         UUID seller = sellerId != null ? UUID.fromString(sellerId) : null;
         return new ProductCommand(seller, name, description, price, stock, status, operator);

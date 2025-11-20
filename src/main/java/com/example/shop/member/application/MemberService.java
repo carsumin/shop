@@ -32,6 +32,7 @@ public class MemberService {
                 .toList();
         return new ResponseEntity<>(HttpStatus.OK.value(), members, page.getTotalElements());
     }
+
     public ResponseEntity<MemberInfo> create(MemberCommand command) {
         Member member = Member.create(
                 command.email(),

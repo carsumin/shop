@@ -49,7 +49,7 @@ public class Seller {
                    String businessNumber,
                    String address,
                    String status) {
-        this.id = UUID.randomUUID();
+        this.id = UUID.randomUUID(); // 등록시점에 UUID로 id 생성
         this.companyName = companyName;
         this.representativeName = representativeName;
         this.email = email;
@@ -88,7 +88,7 @@ public class Seller {
     @PrePersist
     public void onCreate() {
         LocalDateTime now = LocalDateTime.now();
-        if (id == null) {
+        if (id == null) { // INSERT 전에 id 없으면 UUID 생성
             id = UUID.randomUUID();
         }
         createdAt = now;
