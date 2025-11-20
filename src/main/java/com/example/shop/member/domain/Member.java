@@ -1,4 +1,4 @@
-package com.example.shop.member;
+package com.example.shop.member.domain;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -60,7 +60,7 @@ public class Member {
     public Member(){}
 
     // 2. 외부에서 이미 UUID 타입으로 id를 가지고 있을 때 사용
-    public Member(UUID id,
+    private Member(UUID id,
                   String email,
                   String name,
                   String password,
@@ -76,15 +76,21 @@ public class Member {
         this.flag = flag;
     }
 
-    // 3. id를 문자열로 받고 내부에서 UUID로 변환
-    public Member(String id,
-                  String email,
-                  String name,
-                  String password,
-                  String phone,
-                  String saltKey,
-                  String flag) {
-        this.id = UUID.fromString(id);
+    public static Member create(String email,
+                                String name,
+                                String password,
+                                String phone,
+                                String saltKey,
+                                String flag) {
+        return new Member(UUID.randomUUID(), email, name, password, phone, saltKey, flag);
+    }
+
+    public void updateInformation(String email,
+                                  String name,
+                                  String password,
+                                  String phone,
+                                  String saltKey,
+                                  String flag) {
         this.email = email;
         this.name = name;
         this.password = password;
