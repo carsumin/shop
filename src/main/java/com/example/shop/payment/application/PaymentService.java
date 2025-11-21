@@ -2,8 +2,10 @@ package com.example.shop.payment.application;
 
 import com.example.shop.common.ResponseEntity;
 import com.example.shop.payment.application.dto.PaymentCommand;
-//import com.example.shop.payment.application.dto.PaymentFailCommand;
-//import com.example.shop.payment.application.dto.PaymentFailureInfo;
+import com.example.shop.payment.application.dto.PaymentFailCommand;
+import com.example.shop.payment.application.dto.PaymentFailureInfo;
+import com.example.shop.payment.application.dto.PaymentFailCommand;
+import com.example.shop.payment.application.dto.PaymentFailureInfo;
 import com.example.shop.payment.application.dto.PaymentInfo;
 import com.example.shop.payment.client.TossPaymentClient;
 //import com.example.shop.payment.client.dto.TossPaymentResponse;
@@ -11,8 +13,8 @@ import com.example.shop.payment.client.TossPaymentClient;
 //import com.example.shop.order.domain.PurchaseOrder;
 import com.example.shop.payment.client.dto.TossPaymentResponse;
 import com.example.shop.payment.domain.Payment;
-//import com.example.shop.payment.domain.PaymentFailure;
-//import com.example.shop.payment.domain.PaymentFailureRepository;
+import com.example.shop.payment.domain.PaymentFailure;
+import com.example.shop.payment.domain.PaymentFailureRepository;
 import com.example.shop.payment.domain.PaymentRepository;
 //import com.example.shop.settlement.domain.SellerSettlement;
 //import com.example.shop.settlement.domain.SellerSettlementRepository;
@@ -31,7 +33,7 @@ import java.util.UUID;
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
-//    private final PaymentFailureRepository paymentFailureRepository;
+    private final PaymentFailureRepository paymentFailureRepository;
 //    private final SellerSettlementRepository sellerSettlementRepository;
     private final TossPaymentClient tossPaymentClient;
 //    private final OrderService orderService;
@@ -86,17 +88,17 @@ public class PaymentService {
 //        sellerSettlementRepository.save(settlement);
         return new ResponseEntity<>(HttpStatus.CREATED.value(), PaymentInfo.from(saved), 1);
     }
-//
-//    public ResponseEntity<PaymentFailureInfo> recordFailure(PaymentFailCommand command) {
-//        PaymentFailure failure = PaymentFailure.from(
-//                command.orderId(),
-//                command.paymentKey(),
-//                command.errorCode(),
-//                command.errorMessage(),
-//                command.amount(),
-//                command.rawPayload()
-//        );
-//        PaymentFailure saved = paymentFailureRepository.save(failure);
-//        return new ResponseEntity<>(HttpStatus.OK.value(), PaymentFailureInfo.from(saved), 1);
-//    }
+
+    public ResponseEntity<PaymentFailureInfo> recordFailure(PaymentFailCommand command) {
+        PaymentFailure failure = PaymentFailure.from(
+                command.orderId(),
+                command.paymentKey(),
+                command.errorCode(),
+                command.errorMessage(),
+                command.amount(),
+                command.rawPayload()
+        );
+        PaymentFailure saved = paymentFailureRepository.save(failure);
+        return new ResponseEntity<>(HttpStatus.OK.value(), PaymentFailureInfo.from(saved), 1);
+    }
 }
